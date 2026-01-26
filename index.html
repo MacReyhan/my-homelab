@@ -14,7 +14,6 @@
             color: #1C1917; /* Stone-900 */
         }
         
-        /* Chart Container Styling Requirements */
         .chart-container {
             position: relative;
             width: 100%;
@@ -22,169 +21,235 @@
             margin-left: auto;
             margin-right: auto;
             height: 300px;
-            max-height: 400px;
         }
         
         @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+            .chart-container { height: 350px; }
         }
 
         .glass-panel {
             background: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(231, 229, 228, 1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             border-radius: 1rem;
         }
 
-        .nav-active {
-            border-bottom: 2px solid #ea580c; /* Orange-600 */
-            color: #ea580c;
+        /* --- Custom Button Animations --- */
+        .btn-animate {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-animate:hover {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-animate:active {
+            transform: translateY(0) scale(0.96);
+        }
+
+        .copy-success-pulse {
+            animation: pulse-orange 0.5s ease-out;
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(234, 88, 12, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6d3d1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
         }
     </style>
-    <!-- Chosen Palette: Warm Neutrals (Stone) with Terracotta Accents. Minimalist and calm. -->
-    <!-- Application Structure Plan: Dashboard layout. 
-         1. Header: Intro and context.
-         2. Top Grid: "The Rig" (Hardware) vs "Node Comparison" (Chart). 
-         3. Middle Section: "Network Mesh" (Table data presented as cards).
-         4. Bottom Section: "Command Uplink" (RustDesk Config) using a tabbed interface to switch views.
-         Rationale: Splitting hardware and software config allows for logical mental grouping. The chart adds a visual comparison of the distinct roles of the machines. -->
-    <!-- Visualization & Content Choices: 
-         1. Radar Chart: To compare the conceptual "stats" of the 3 nodes (Win11 = Power, GCS = Connectivity, VM = Utility). Goal: Relationships/Compare.
-         2. Interactive Tabs: For RustDesk keys. Goal: Change/Cleanliness.
-         3. Card Grid: For Network IPs. Goal: Organize.
-         4. No SVG/Mermaid used. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
-    <!-- Main Container -->
     <div class="max-w-7xl mx-auto space-y-8">
 
         <!-- Header -->
-        <header class="text-center md:text-left space-y-2">
-            <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-stone-800">Sayan's Hybrid Cloud</h1>
-            <p class="text-stone-500 max-w-2xl">
-                Digital Command Center. Monitoring the triple-threat system setup connected via Tailscale Mesh and managed through RustDesk. 
-                <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold ml-2">ONLINE</span>
-            </p>
+        <header class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left space-y-1">
+                <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-stone-800">Sayan's Hybrid Cloud</h1>
+                <p class="text-stone-500 max-w-2xl">
+                    Digital Command Center. Monitoring the triple-threat system setup.
+                    <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold ml-2 animate-pulse">● ONLINE</span>
+                </p>
+            </div>
+            <div class="text-right">
+                <div class="text-xs uppercase font-bold text-stone-400">Last Sync</div>
+                <div class="text-stone-600 font-mono">Jan 2026.04.02</div>
+            </div>
         </header>
 
-        <!-- Top Row: Hardware & Viz -->
+        <!-- Top Row: Hardware & Node Radar -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
             <!-- Section: The Rig (Win11) -->
-            <section class="glass-panel p-6 flex flex-col justify-between">
+            <section class="glass-panel p-6">
                 <div class="mb-4">
                     <h2 class="text-xl font-bold text-stone-700 flex items-center gap-2">
                         🖥️ The Core Rig (Win11)
                     </h2>
-                    <p class="text-sm text-stone-500 mt-1">
-                        The primary workstation handling compute-heavy tasks and gaming.
-                    </p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Spec Card 1 -->
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-orange-300 transition-colors cursor-default group">
-                        <div class="text-xs text-stone-400 uppercase font-semibold">Processing Unit</div>
-                        <div class="font-bold text-stone-800">AMD Ryzen 5 5500</div>
-                        <div class="text-xs text-stone-500">3.6GHz 6-Core 🚀</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 btn-animate cursor-default">
+                        <div class="text-[10px] text-stone-400 uppercase font-bold">CPU</div>
+                        <div class="font-bold text-stone-800 text-sm">AMD Ryzen 5 5500</div>
+                        <div class="text-[10px] text-stone-500">3.6GHz 6-Core 🚀</div>
                     </div>
-                    <!-- Spec Card 2 -->
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-orange-300 transition-colors cursor-default group">
-                        <div class="text-xs text-stone-400 uppercase font-semibold">Graphics</div>
-                        <div class="font-bold text-stone-800">Radeon RX 6400</div>
-                        <div class="text-xs text-stone-500">4GB GDDR6 🎮</div>
+                    <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 btn-animate cursor-default">
+                        <div class="text-[10px] text-stone-400 uppercase font-bold">GPU</div>
+                        <div class="font-bold text-stone-800 text-sm">Radeon RX 6400</div>
+                        <div class="text-[10px] text-stone-500">4GB GDDR6 🎮</div>
                     </div>
-                    <!-- Spec Card 3 -->
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-orange-300 transition-colors cursor-default group">
-                        <div class="text-xs text-stone-400 uppercase font-semibold">Memory</div>
-                        <div class="font-bold text-stone-800">16GB Crucial</div>
-                        <div class="text-xs text-stone-500">DDR4 3200MHz CL22 ⚡</div>
+                    <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 btn-animate cursor-default">
+                        <div class="text-[10px] text-stone-400 uppercase font-bold">RAM</div>
+                        <div class="font-bold text-stone-800 text-sm">16GB Crucial</div>
+                        <div class="text-[10px] text-stone-500">3200MHz CL22 (8x2) ⚡</div>
                     </div>
-                    <!-- Spec Card 4 -->
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-orange-300 transition-colors cursor-default group">
-                        <div class="text-xs text-stone-400 uppercase font-semibold">Motherboard</div>
-                        <div class="font-bold text-stone-800">MSI B550M A PRO</div>
-                        <div class="text-xs text-stone-500">Solid Foundation 🛠️</div>
+                    <div class="bg-stone-50 p-3 rounded-lg border border-stone-200 btn-animate cursor-default">
+                        <div class="text-[10px] text-stone-400 uppercase font-bold">Power Supply</div>
+                        <div class="font-bold text-stone-800 text-sm">Ant Esports RX550</div>
+                        <div class="text-[10px] text-stone-500">Energy Source 🔌</div>
                     </div>
                 </div>
 
-                <div class="mt-4 flex gap-4 text-sm text-stone-600 border-t border-stone-100 pt-4">
-                    <span class="flex items-center gap-1">🖥️ L22-e40 Monitor</span>
-                    <span class="flex items-center gap-1">🎧 Zeb Blitz Audio</span>
+                <div class="mt-4 flex flex-wrap gap-4 text-[11px] text-stone-500 border-t border-stone-100 pt-3 uppercase font-bold tracking-wider">
+                    <span>📺 L22-e40</span>
+                    <span>🎧 Zeb Blitz</span>
+                    <span>🛠️ MSI B550M A PRO</span>
                 </div>
             </section>
 
-            <!-- Section: System Comparison Viz -->
+            <!-- Section: Node Comparison -->
             <section class="glass-panel p-6">
                 <div class="mb-2">
-                    <h2 class="text-xl font-bold text-stone-700">Node Capabilities</h2>
-                    <p class="text-sm text-stone-500">Conceptual comparison of node strengths within the mesh.</p>
+                    <h2 class="text-xl font-bold text-stone-700">Capability Matrix</h2>
                 </div>
-                <!-- Chart Container -->
                 <div class="chart-container">
                     <canvas id="nodeRadarChart"></canvas>
                 </div>
             </section>
         </div>
 
-        <!-- Middle Row: Tailscale Network -->
-        <section class="glass-panel p-6">
-            <div class="mb-6">
-                <h2 class="text-xl font-bold text-stone-700 flex items-center gap-2">
-                    🚇 Tailscale Mesh Network
-                </h2>
-                <p class="text-sm text-stone-500 mt-1">
-                    Live node inventory. These devices form the private secure network.
-                </p>
+        <!-- Middle Row: Script Vault & Terminal Ninja -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Scripts Section -->
+            <section class="lg:col-span-1 glass-panel p-6 space-y-4">
+                <h2 class="text-xl font-bold text-stone-700 flex items-center gap-2">🛠️ Automation Scripts</h2>
+                
+                <div class="space-y-3">
+                    <div class="p-3 bg-stone-900 rounded-lg group border border-transparent hover:border-orange-500/30 transition-all">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-orange-400 text-xs font-bold">linuxtailscale.sh</span>
+                            <span class="text-stone-500 text-[10px]">BASH</span>
+                        </div>
+                        <p class="text-stone-400 text-[11px] mb-2">Auto-installs RustDesk & configures Tailscale relay on Linux nodes.</p>
+                        <button onclick="copyToClipboard('sudo bash linuxtailscale.sh', this)" class="w-full py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] rounded border border-stone-700 btn-animate uppercase font-bold">Copy Run Cmd</button>
+                    </div>
+
+                    <div class="p-3 bg-stone-900 rounded-lg group border border-transparent hover:border-blue-500/30 transition-all">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-blue-400 text-xs font-bold">windowstailscale.ps1</span>
+                            <span class="text-stone-500 text-[10px]">POWERSHELL</span>
+                        </div>
+                        <p class="text-stone-400 text-[11px] mb-2">PowerShell automation for Windows 11 rig config & updates.</p>
+                        <button onclick="copyToClipboard('powershell -ExecutionPolicy Bypass -File windowstailscale.ps1', this)" class="w-full py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] rounded border border-stone-700 btn-animate uppercase font-bold">Copy Run Cmd</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Terminal Ninja Section -->
+            <section class="lg:col-span-2 glass-panel p-6">
+                <h2 class="text-xl font-bold text-stone-700 flex items-center gap-2 mb-4">🥷 Terminal Ninja Cheat Sheet</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <h3 class="text-xs font-bold text-orange-600 uppercase tracking-widest">Speed Navigation</h3>
+                        <ul class="text-xs space-y-2 text-stone-600">
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">Ctrl + A</kbd> Start of line</li>
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">Ctrl + E</kbd> End of line</li>
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">Alt + B/F</kbd> Jump words</li>
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">Ctrl + W</kbd> Delete word</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-3">
+                        <h3 class="text-xs font-bold text-stone-400 uppercase tracking-widest">Power Moves</h3>
+                        <ul class="text-xs space-y-2 text-stone-600">
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">Ctrl + R</kbd> Search history (GOAT)</li>
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">!!</kbd> Run last command as sudo</li>
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">Ctrl + Q</kbd> Unfreeze terminal</li>
+                            <li><kbd class="px-1 py-0.5 bg-stone-100 border rounded text-stone-800 font-mono shadow-sm">Ctrl+Shift+C/V</kbd> Copy/Paste</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Network Row -->
+        <section class="glass-panel overflow-hidden">
+            <div class="p-6 border-b border-stone-100 flex justify-between items-end">
+                <div>
+                    <h2 class="text-xl font-bold text-stone-700">🚇 Tailscale Mesh Network</h2>
+                    <p class="text-sm text-stone-500">Live Node Directory</p>
+                </div>
+                <div class="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-1 rounded">3 ACTIVE NODES</div>
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-stone-600">
-                    <thead class="bg-stone-100 text-stone-700 uppercase font-bold">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-stone-50 text-stone-400 uppercase text-[10px] font-bold">
                         <tr>
-                            <th class="px-6 py-3 rounded-l-lg">Device</th>
-                            <th class="px-6 py-3">Hostname</th>
+                            <th class="px-6 py-3">Node</th>
                             <th class="px-6 py-3">OS</th>
                             <th class="px-6 py-3">Tailscale IP</th>
-                            <th class="px-6 py-3 rounded-r-lg text-right">Action</th>
+                            <th class="px-6 py-3 text-right">Access</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-100">
-                        <tr class="hover:bg-stone-50 transition-colors">
-                            <td class="px-6 py-4 font-bold text-stone-800">Local PC</td>
-                            <td class="px-6 py-4 font-mono text-xs bg-stone-100/50 rounded inline-block mt-2">byod-6058829</td>
-                            <td class="px-6 py-4">Windows 11</td>
-                            <td class="px-6 py-4 font-mono text-orange-600">100.114.16.127</td>
+                        <tr class="hover:bg-stone-50/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-stone-800">Local PC</div>
+                                <div class="text-[10px] text-stone-400 font-mono">byod-6058829</div>
+                            </td>
+                            <td class="px-6 py-4 text-stone-600">Windows 11</td>
+                            <td class="px-6 py-4 font-mono text-orange-600 font-bold">100.114.16.127</td>
                             <td class="px-6 py-4 text-right">
-                                <button onclick="copyToClipboard('100.114.16.127')" class="text-stone-400 hover:text-orange-500 transition-colors">
-                                    📋 Copy
-                                </button>
+                                <button onclick="copyToClipboard('100.114.16.127', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate">COPY IP</button>
                             </td>
                         </tr>
-                        <tr class="hover:bg-stone-50 transition-colors">
-                            <td class="px-6 py-4 font-bold text-stone-800">VMLinux</td>
-                            <td class="px-6 py-4 font-mono text-xs bg-stone-100/50 rounded inline-block mt-2">mbhouse-vm-linux</td>
-                            <td class="px-6 py-4">Ubuntu (VMWare)</td>
-                            <td class="px-6 py-4 font-mono text-orange-600">100.110.192.119</td>
+                        <tr class="hover:bg-stone-50/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-stone-800">VMLinux</div>
+                                <div class="text-[10px] text-stone-400 font-mono">mbhouse-vm-linux</div>
+                            </td>
+                            <td class="px-6 py-4 text-stone-600">Ubuntu (VMWare)</td>
+                            <td class="px-6 py-4 font-mono text-orange-600 font-bold">100.110.192.119</td>
                             <td class="px-6 py-4 text-right">
-                                <button onclick="copyToClipboard('100.110.192.119')" class="text-stone-400 hover:text-orange-500 transition-colors">
-                                    📋 Copy
-                                </button>
+                                <button onclick="copyToClipboard('100.110.192.119', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate">COPY IP</button>
                             </td>
                         </tr>
-                        <tr class="hover:bg-stone-50 transition-colors">
-                            <td class="px-6 py-4 font-bold text-stone-800">GCSLinux</td>
-                            <td class="px-6 py-4 font-mono text-xs bg-stone-100/50 rounded inline-block mt-2">sayan-vm-server</td>
-                            <td class="px-6 py-4">Google Cloud Shell</td>
-                            <td class="px-6 py-4 font-mono text-orange-600">100.99.221.100</td>
+                        <tr class="hover:bg-stone-50/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-stone-800">GCSLinux</div>
+                                <div class="text-[10px] text-stone-400 font-mono">sayan-vm-server</div>
+                            </td>
+                            <td class="px-6 py-4 text-stone-600">Google Cloud Shell</td>
+                            <td class="px-6 py-4 font-mono text-orange-600 font-bold">100.99.221.100</td>
                             <td class="px-6 py-4 text-right">
-                                <button onclick="copyToClipboard('100.99.221.100')" class="text-stone-400 hover:text-orange-500 transition-colors">
-                                    📋 Copy
-                                </button>
+                                <button onclick="copyToClipboard('100.99.221.100', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate">COPY IP</button>
                             </td>
                         </tr>
                     </tbody>
@@ -192,102 +257,69 @@
             </div>
         </section>
 
-        <!-- Bottom Row: RustDesk Config -->
+        <!-- RustDesk Section -->
         <section class="glass-panel p-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                 <div>
-                    <h2 class="text-xl font-bold text-stone-700 flex items-center gap-2">
-                        🛡️ RustDesk Configuration
-                    </h2>
-                    <p class="text-sm text-stone-500 mt-1">
-                        Secure remote access details. GCSLinux acts as the signaling/relay server.
-                    </p>
+                    <h2 class="text-xl font-bold text-stone-700 flex items-center gap-2">🛡️ RustDesk Relay Config</h2>
+                    <p class="text-sm text-stone-500">Signaling/Relay Server: GCSLinux</p>
                 </div>
                 
-                <!-- Toggle Tabs -->
-                <div class="flex bg-stone-100 rounded-lg p-1">
-                    <button id="tab-tailscale" onclick="switchTab('tailscale')" class="px-4 py-2 text-sm font-medium rounded-md shadow-sm bg-white text-stone-800 transition-all">
-                        🏎️ Tailscale (Internal)
-                    </button>
-                    <button id="tab-public" onclick="switchTab('public')" class="px-4 py-2 text-sm font-medium rounded-md text-stone-500 hover:text-stone-700 transition-all">
-                        🌍 Public (External)
-                    </button>
+                <div class="flex bg-stone-100 rounded-lg p-1 shadow-inner">
+                    <button id="tab-tailscale" onclick="switchTab('tailscale')" class="px-4 py-2 text-xs font-bold rounded-md shadow-sm bg-white text-stone-800 btn-animate">🏎️ INTERNAL (TS)</button>
+                    <button id="tab-public" onclick="switchTab('public')" class="px-4 py-2 text-xs font-bold rounded-md text-stone-500 hover:text-stone-700 btn-animate">🌍 PUBLIC WEB</button>
                 </div>
             </div>
 
-            <!-- Tailscale Content -->
-            <div id="content-tailscale" class="space-y-4">
-                <div class="bg-orange-50 border border-orange-100 p-4 rounded-lg">
-                    <h3 class="font-bold text-orange-800 text-sm mb-2">Recommended Configuration</h3>
-                    <p class="text-orange-700 text-xs">Use this when devices are connected to the Tailscale mesh. Bypasses public internet congestion.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                        <label class="block text-xs uppercase font-bold text-stone-400 mb-1">ID / Relay Server</label>
-                        <div class="flex items-center gap-2">
-                            <code class="font-mono text-stone-800 text-sm flex-1">100.99.221.100</code>
-                            <button onclick="copyToClipboard('100.99.221.100')" class="text-xs bg-white border border-stone-300 px-2 py-1 rounded hover:bg-stone-50">Copy</button>
-                        </div>
+            <div id="content-tailscale" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-orange-200 transition-all">
+                    <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Relay Server</label>
+                    <div class="flex items-center justify-between">
+                        <code class="font-mono text-stone-800 text-sm">100.99.221.100</code>
+                        <button onclick="copyToClipboard('100.99.221.100', this)" class="text-[10px] font-bold text-stone-400 hover:text-orange-600 transition-colors uppercase btn-animate">Copy</button>
                     </div>
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                        <label class="block text-xs uppercase font-bold text-stone-400 mb-1">Key</label>
-                        <div class="flex items-center gap-2">
-                            <code class="font-mono text-stone-800 text-sm flex-1 truncate">MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=</code>
-                            <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=')" class="text-xs bg-white border border-stone-300 px-2 py-1 rounded hover:bg-stone-50">Copy</button>
-                        </div>
+                </div>
+                <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-orange-200 transition-all">
+                    <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Secure Key</label>
+                    <div class="flex items-center justify-between">
+                        <code class="font-mono text-stone-800 text-sm truncate pr-2">MhGj1W5nVR3PI...</code>
+                        <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=', this)" class="text-[10px] font-bold text-stone-400 hover:text-orange-600 transition-colors uppercase shrink-0 btn-animate">Copy Key</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Public Content (Hidden by default) -->
-            <div id="content-public" class="hidden space-y-4">
-                <div class="bg-blue-50 border border-blue-100 p-4 rounded-lg">
-                    <h3 class="font-bold text-blue-800 text-sm mb-2">Fallback Configuration</h3>
-                    <p class="text-blue-700 text-xs">Use this when connecting from a public network where Tailscale is unavailable.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                        <label class="block text-xs uppercase font-bold text-stone-400 mb-1">ID / Relay Server</label>
-                        <div class="flex items-center gap-2">
-                            <code class="font-mono text-stone-800 text-sm flex-1">35.206.126.125</code>
-                            <button onclick="copyToClipboard('35.206.126.125')" class="text-xs bg-white border border-stone-300 px-2 py-1 rounded hover:bg-stone-50">Copy</button>
-                        </div>
+            <div id="content-public" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-blue-200 transition-all">
+                    <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Public IP</label>
+                    <div class="flex items-center justify-between">
+                        <code class="font-mono text-stone-800 text-sm">35.206.126.125</code>
+                        <button onclick="copyToClipboard('35.206.126.125', this)" class="text-[10px] font-bold text-stone-400 hover:text-blue-600 transition-colors uppercase btn-animate">Copy</button>
                     </div>
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                        <label class="block text-xs uppercase font-bold text-stone-400 mb-1">Key</label>
-                        <div class="flex items-center gap-2">
-                            <code class="font-mono text-stone-800 text-sm flex-1 truncate">MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=</code>
-                            <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=')" class="text-xs bg-white border border-stone-300 px-2 py-1 rounded hover:bg-stone-50">Copy</button>
-                        </div>
+                </div>
+                <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-blue-200 transition-all">
+                    <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Secure Key</label>
+                    <div class="flex items-center justify-between">
+                        <code class="font-mono text-stone-800 text-sm truncate pr-2">MhGj1W5nVR3PI...</code>
+                        <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=', this)" class="text-[10px] font-bold text-stone-400 hover:text-blue-600 transition-colors uppercase shrink-0 btn-animate">Copy Key</button>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="text-center text-xs text-stone-400 pb-8">
-            <p>Last Updated: January 2026</p>
-            <div class="flex justify-center gap-4 mt-2">
-                <span>Linux</span>
-                <span>Windows 11</span>
-                <span>Tailscale</span>
-                <span>RustDesk</span>
-            </div>
+        <footer class="text-center text-[10px] text-stone-400 font-bold uppercase tracking-widest pb-8">
+            <p>AMD Ryzen 5 5500 | Radeon RX 6400 | Tailscale | RustDesk</p>
         </footer>
 
     </div>
 
-    <!-- Toast Notification (Hidden by default) -->
-    <div id="toast" class="fixed bottom-4 right-4 bg-stone-800 text-white px-4 py-2 rounded shadow-lg transform translate-y-20 opacity-0 transition-all duration-300">
-        Copied to clipboard!
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-stone-900 text-stone-100 px-6 py-3 rounded-xl shadow-2xl transform translate-y-24 opacity-0 transition-all duration-300 font-bold text-xs flex items-center gap-2">
+        <span class="text-orange-500">✔</span> COPIED TO CLIPBOARD 🚀
     </div>
 
     <script>
-        // --- Interaction Logic ---
-
-        // 1. RustDesk Tab Switching
+        // --- RustDesk Tab Switching ---
         const switchTab = (tabName) => {
             const tailscaleBtn = document.getElementById('tab-tailscale');
             const publicBtn = document.getElementById('tab-public');
@@ -295,143 +327,107 @@
             const publicContent = document.getElementById('content-public');
 
             if (tabName === 'tailscale') {
-                // Style Active
                 tailscaleBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
                 tailscaleBtn.classList.remove('text-stone-500');
-                
-                // Style Inactive
                 publicBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
                 publicBtn.classList.add('text-stone-500');
-
-                // Content
                 tailscaleContent.classList.remove('hidden');
                 publicContent.classList.add('hidden');
             } else {
-                // Style Active
                 publicBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
                 publicBtn.classList.remove('text-stone-500');
-                
-                // Style Inactive
                 tailscaleBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
                 tailscaleBtn.classList.add('text-stone-500');
-
-                // Content
                 publicContent.classList.remove('hidden');
                 tailscaleContent.classList.add('hidden');
             }
         };
 
-        // 2. Clipboard Functionality
-        const copyToClipboard = (text) => {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast();
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
+        // --- Clipboard Helper with Animation ---
+        const copyToClipboard = (text, btnElement) => {
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            // Pulse the button
+            if(btnElement) {
+                btnElement.classList.add('copy-success-pulse');
+                setTimeout(() => btnElement.classList.remove('copy-success-pulse'), 500);
+            }
+            
+            showToast();
         };
 
         const showToast = () => {
             const toast = document.getElementById('toast');
-            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 2000);
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 2500);
         };
 
-        // 3. Chart.js Implementation
+        // --- Radar Chart ---
         document.addEventListener('DOMContentLoaded', () => {
             const ctx = document.getElementById('nodeRadarChart').getContext('2d');
-            
-            // Conceptual data mapping:
-            // Win11: High GPU, High CPU
-            // VMLinux: Mid CPU, Mid Storage
-            // GCSLinux: High Connectivity, High Availability
             
             new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['Compute Power', 'Graphics', 'Storage Access', 'Network Stability', 'Availability'],
+                    labels: ['Compute', 'Graphics', 'Storage', 'Network', 'Uptime'],
                     datasets: [
                         {
-                            label: 'Win11 (Local)',
+                            label: 'Win11 (Rig)',
                             data: [90, 95, 80, 70, 60],
-                            fill: true,
-                            backgroundColor: 'rgba(234, 88, 12, 0.2)', // Orange
+                            backgroundColor: 'rgba(234, 88, 12, 0.2)',
                             borderColor: 'rgb(234, 88, 12)',
                             pointBackgroundColor: 'rgb(234, 88, 12)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(234, 88, 12)'
+                            borderWidth: 2
                         },
                         {
-                            label: 'VMLinux (Virtual)',
+                            label: 'VMLinux (VM)',
                             data: [60, 20, 70, 80, 70],
-                            fill: true,
-                            backgroundColor: 'rgba(87, 83, 78, 0.2)', // Stone
+                            backgroundColor: 'rgba(87, 83, 78, 0.2)',
                             borderColor: 'rgb(87, 83, 78)',
                             pointBackgroundColor: 'rgb(87, 83, 78)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(87, 83, 78)'
+                            borderWidth: 2
                         },
                         {
-                            label: 'GCSLinux (Cloud)',
+                            label: 'GCS (Cloud)',
                             data: [40, 0, 50, 100, 95],
-                            fill: true,
-                            backgroundColor: 'rgba(59, 130, 246, 0.2)', // Blue
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
                             borderColor: 'rgb(59, 130, 246)',
                             pointBackgroundColor: 'rgb(59, 130, 246)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(59, 130, 246)'
+                            borderWidth: 2
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    elements: {
-                        line: {
-                            borderWidth: 2
-                        }
-                    },
                     scales: {
                         r: {
-                            angleLines: {
-                                display: true,
-                                color: '#E7E5E4'
-                            },
-                            grid: {
-                                color: '#E7E5E4'
-                            },
+                            angleLines: { color: '#E7E5E4' },
+                            grid: { color: '#E7E5E4' },
                             pointLabels: {
-                                font: {
-                                    size: 11,
-                                    family: "'Space Grotesk', sans-serif"
-                                },
+                                font: { size: 10, family: "'Space Grotesk', sans-serif", weight: 'bold' },
                                 color: '#78716C'
                             },
                             suggestedMin: 0,
                             suggestedMax: 100,
-                            ticks: {
-                                display: false // Hide numbers for cleaner look
-                            }
+                            ticks: { display: false }
                         }
                     },
                     plugins: {
                         legend: {
                             position: 'bottom',
                             labels: {
-                                font: {
-                                    family: "'Space Grotesk', sans-serif"
-                                },
-                                color: '#44403C'
+                                font: { size: 11, family: "'Space Grotesk', sans-serif" },
+                                boxWidth: 10,
+                                padding: 20
                             }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(28, 25, 23, 0.9)',
-                            titleFont: { family: "'Space Grotesk', sans-serif" },
-                            bodyFont: { family: "'Space Grotesk', sans-serif" }
                         }
                     }
                 }
