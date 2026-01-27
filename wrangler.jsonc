@@ -1,5 +1,7 @@
 {
-  "name": "your-worker-name",
-  "main": "src/index.ts", // or index.js
-  "compatibility_date": "2026-01-27"
+  "name": "macreyhan-site",
+  "compatibility_date": "2026-01-27",
+  "assets": {
+    "directory": "./" 
+  }
 }
