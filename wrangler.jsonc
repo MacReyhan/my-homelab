@@ -1,7 +1,9 @@
 {
   "name": "my-homelab",
+  "main": "./index.html"
   "compatibility_date": "2026-01-27",
   "assets": {
     "directory": "./" 
+    "binding": "ASSETS"
   }
 }
