@@ -3,15 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard for Sayan's hybrid cloud and homelab setup, monitoring hardware, network nodes, and automation scripts.">
     <title>Sayan's Hybrid Cloud & Homelab</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-primary: #F5F5F4;
+            --bg-secondary: rgba(255, 255, 255, 0.95);
+            --text-primary: #1C1917;
+            --text-secondary: #78716C;
+            --text-muted: #9CA3AF;
+            --border-color: rgba(231, 229, 228, 1);
+            --accent-orange: #EA580C;
+            --accent-blue: #3B82F6;
+            --bg-dark-primary: #0F172A;
+            --bg-dark-secondary: rgba(30, 41, 59, 0.95);
+            --text-dark-primary: #F1F5F9;
+            --text-dark-secondary: #D1D5DB;
+            --text-dark-muted: #9CA3AF;
+            --border-dark-color: rgba(51, 65, 85, 1);
+        }
+
         body {
             font-family: 'Space Grotesk', sans-serif;
-            background-color: #F5F5F4; /* Warm Stone-100 */
-            color: #1C1917; /* Stone-900 */
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
         }
         
         .chart-container {
@@ -28,10 +47,168 @@
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(231, 229, 228, 1);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             border-radius: 1rem;
+        }
+
+        .dark body {
+            background-color: var(--bg-dark-primary);
+            color: var(--text-dark-primary);
+        }
+
+        .dark .glass-panel {
+            background: var(--bg-dark-secondary);
+            border: 1px solid var(--border-dark-color);
+        }
+
+        /* Dark mode overrides for Tailwind classes */
+        .dark .text-stone-800 {
+            color: var(--text-dark-primary);
+        }
+        .dark .text-stone-700 {
+            color: var(--text-dark-secondary);
+        }
+        .dark .text-stone-600 {
+            color: var(--text-dark-secondary);
+        }
+        .dark .text-stone-500 {
+            color: var(--text-dark-muted);
+        }
+        .dark .text-stone-400 {
+            color: var(--text-dark-muted);
+        }
+        .dark .bg-stone-50 {
+            background-color: var(--bg-dark-secondary);
+        }
+        .dark .bg-stone-100 {
+            background-color: var(--bg-dark-secondary);
+        }
+        .dark .bg-stone-900 {
+            background-color: #111827;
+        }
+        .dark .text-stone-300 {
+            color: var(--text-dark-secondary);
+        }
+        .dark .text-stone-100 {
+            color: var(--text-dark-primary);
+        }
+        .dark .bg-stone-800 {
+            background-color: #1F2937;
+        }
+        .dark .hover\:bg-stone-700:hover {
+            background-color: #374151;
+        }
+        .dark .border-stone-200 {
+            border-color: var(--border-dark-color);
+        }
+        .dark .border-stone-100 {
+            border-color: var(--border-dark-color);
+        }
+        .dark .border-stone-700 {
+            border-color: #374151;
+        }
+        .dark .text-green-800 {
+            color: #10B981;
+        }
+        .dark .bg-green-100 {
+            background-color: #064E3B;
+        }
+        .dark .text-orange-600 {
+            color: var(--accent-orange);
+        }
+        .dark .text-blue-400 {
+            color: var(--accent-blue);
+        }
+        .dark .bg-orange-50 {
+            background-color: #7C2D12;
+        }
+        .dark .text-orange-500 {
+            color: var(--accent-orange);
+        }
+        .dark .hover\:border-orange-500:hover {
+            border-color: var(--accent-orange);
+        }
+        .dark .hover\:border-blue-500:hover {
+            border-color: var(--accent-blue);
+        }
+        .dark .hover\:border-orange-200:hover {
+            border-color: #FED7AA;
+        }
+        .dark .hover\:border-blue-200:hover {
+            border-color: #BFDBFE;
+        }
+        .dark .divide-stone-100 > * + * {
+            border-color: var(--border-dark-color);
+        }
+        .dark .hover\:bg-stone-50\/50:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+        }
+        .dark .bg-stone-900 {
+            background-color: #111827;
+        }
+        .dark .text-stone-100 {
+            color: var(--text-dark-primary);
+        }
+        .dark .text-orange-500 {
+            color: var(--accent-orange);
+        }
+        .dark .bg-stone-200 {
+            background-color: #374151;
+        }
+        .dark .hover\:bg-stone-300:hover {
+            background-color: #4B5563;
+        }
+        .dark .text-stone-800 {
+            color: var(--text-dark-primary);
+        }
+        .dark .bg-stone-700 {
+            background-color: #374151;
+        }
+        .dark .hover\:bg-stone-600:hover {
+            background-color: #4B5563;
+        }
+        .dark .text-stone-200 {
+            color: var(--text-dark-secondary);
+        }
+        
+        /* Dark mode for keyboard shortcuts */
+        .dark kbd {
+            background-color: #374151 !important;
+            color: var(--text-dark-primary) !important;
+            border-color: #4B5563 !important;
+        }
+        
+        /* Dark mode for tab buttons */
+        .dark #tab-tailscale.bg-white {
+            background-color: #1F2937 !important;
+            color: var(--text-dark-primary) !important;
+        }
+        
+        .dark #tab-public.bg-white {
+            background-color: #1F2937 !important;
+            color: var(--text-dark-primary) !important;
+        }
+        
+        /* Dark mode for toast */
+        .dark #toast {
+            background-color: #1F2937;
+            color: var(--text-dark-primary);
+            border: 1px solid #374151;
+        }
+        
+        /* Dark mode for hover states */
+        .dark .hover\:text-stone-800:hover {
+            color: var(--text-dark-primary) !important;
+        }
+        
+        .dark .hover\:bg-orange-50:hover {
+            background-color: #7C2D12 !important;
+        }
+        
+        .dark .hover\:bg-blue-50:hover {
+            background-color: #1E3A8A !important;
         }
 
         /* --- Custom Button Animations --- */
@@ -71,6 +248,16 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #a8a29e;
         }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #6B7280;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9CA3AF;
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -89,6 +276,7 @@
             <div class="text-right">
                 <div class="text-xs uppercase font-bold text-stone-400">Last Sync</div>
                 <div class="text-stone-600 font-mono">Jan 2026.04.02</div>
+                <button id="theme-toggle" class="mt-2 px-3 py-1 bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600 dark:text-stone-200 text-stone-800 text-xs rounded btn-animate" aria-label="Toggle dark mode">🌙 Dark</button>
             </div>
         </header>
 
@@ -158,7 +346,7 @@
                             <span class="text-stone-500 text-[10px]">BASH</span>
                         </div>
                         <p class="text-stone-400 text-[11px] mb-2">Auto-installs RustDesk & configures Tailscale relay on Linux nodes.</p>
-                        <button onclick="copyToClipboard('sudo bash linuxtailscale.sh', this)" class="w-full py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] rounded border border-stone-700 btn-animate uppercase font-bold">Copy Run Cmd</button>
+                        <button onclick="copyToClipboard('sudo bash linuxtailscale.sh', this)" class="w-full py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] rounded border border-stone-700 btn-animate uppercase font-bold" aria-label="Copy command to clipboard">Copy Run Cmd</button>
                     </div>
 
                     <div class="p-3 bg-stone-900 rounded-lg group border border-transparent hover:border-blue-500/30 transition-all">
@@ -167,7 +355,7 @@
                             <span class="text-stone-500 text-[10px]">POWERSHELL</span>
                         </div>
                         <p class="text-stone-400 text-[11px] mb-2">PowerShell automation for Windows 11 rig config & updates.</p>
-                        <button onclick="copyToClipboard('powershell -ExecutionPolicy Bypass -File windowstailscale.ps1', this)" class="w-full py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] rounded border border-stone-700 btn-animate uppercase font-bold">Copy Run Cmd</button>
+                        <button onclick="copyToClipboard('powershell -ExecutionPolicy Bypass -File windowstailscale.ps1', this)" class="w-full py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] rounded border border-stone-700 btn-animate uppercase font-bold" aria-label="Copy command to clipboard">Copy Run Cmd</button>
                     </div>
                 </div>
             </section>
@@ -227,7 +415,7 @@
                             <td class="px-6 py-4 text-stone-600">Windows 11</td>
                             <td class="px-6 py-4 font-mono text-orange-600 font-bold">100.114.16.127</td>
                             <td class="px-6 py-4 text-right">
-                                <button onclick="copyToClipboard('100.114.16.127', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate">COPY IP</button>
+                                <button onclick="copyToClipboard('100.114.16.127', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate" aria-label="Copy IP address to clipboard">COPY IP</button>
                             </td>
                         </tr>
                         <tr class="hover:bg-stone-50/50 transition-colors">
@@ -238,7 +426,7 @@
                             <td class="px-6 py-4 text-stone-600">Ubuntu (VMWare)</td>
                             <td class="px-6 py-4 font-mono text-orange-600 font-bold">100.110.192.119</td>
                             <td class="px-6 py-4 text-right">
-                                <button onclick="copyToClipboard('100.110.192.119', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate">COPY IP</button>
+                                <button onclick="copyToClipboard('100.110.192.119', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate" aria-label="Copy IP address to clipboard">COPY IP</button>
                             </td>
                         </tr>
                         <tr class="hover:bg-stone-50/50 transition-colors">
@@ -249,7 +437,7 @@
                             <td class="px-6 py-4 text-stone-600">Google Cloud Shell</td>
                             <td class="px-6 py-4 font-mono text-orange-600 font-bold">100.99.221.100</td>
                             <td class="px-6 py-4 text-right">
-                                <button onclick="copyToClipboard('100.99.221.100', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate">COPY IP</button>
+                                <button onclick="copyToClipboard('100.99.221.100', this)" class="text-[10px] font-bold text-stone-400 hover:text-stone-800 transition-colors border px-2 py-1 rounded btn-animate" aria-label="Copy IP address to clipboard">COPY IP</button>
                             </td>
                         </tr>
                     </tbody>
@@ -265,7 +453,7 @@
                     <p class="text-sm text-stone-500">Signaling/Relay Server: GCSLinux</p>
                 </div>
                 
-                <div class="flex bg-stone-100 rounded-lg p-1 shadow-inner">
+                <div class="flex flex-wrap gap-2 bg-stone-100 rounded-lg p-1 shadow-inner">
                     <button id="tab-tailscale" onclick="switchTab('tailscale')" class="px-4 py-2 text-xs font-bold rounded-md shadow-sm bg-white text-stone-800 btn-animate">🏎️ INTERNAL (TS)</button>
                     <button id="tab-public" onclick="switchTab('public')" class="px-4 py-2 text-xs font-bold rounded-md text-stone-500 hover:text-stone-700 btn-animate">🌍 PUBLIC WEB</button>
                 </div>
@@ -276,14 +464,14 @@
                     <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Relay Server</label>
                     <div class="flex items-center justify-between">
                         <code class="font-mono text-stone-800 text-sm">100.99.221.100</code>
-                        <button onclick="copyToClipboard('100.99.221.100', this)" class="text-[10px] font-bold text-stone-400 hover:text-orange-600 transition-colors uppercase btn-animate">Copy</button>
+                        <button onclick="copyToClipboard('100.99.221.100', this)" class="text-[10px] font-bold text-stone-400 hover:text-orange-600 transition-colors uppercase btn-animate" aria-label="Copy relay server IP to clipboard">Copy</button>
                     </div>
                 </div>
                 <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-orange-200 transition-all">
                     <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Secure Key</label>
                     <div class="flex items-center justify-between">
                         <code class="font-mono text-stone-800 text-sm truncate pr-2">MhGj1W5nVR3PI...</code>
-                        <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=', this)" class="text-[10px] font-bold text-stone-400 hover:text-orange-600 transition-colors uppercase shrink-0 btn-animate">Copy Key</button>
+                        <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=', this)" class="text-[10px] font-bold text-stone-400 hover:text-orange-600 transition-colors uppercase shrink-0 btn-animate" aria-label="Copy secure key to clipboard">Copy Key</button>
                     </div>
                 </div>
             </div>
@@ -293,14 +481,14 @@
                     <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Public IP</label>
                     <div class="flex items-center justify-between">
                         <code class="font-mono text-stone-800 text-sm">35.206.126.125</code>
-                        <button onclick="copyToClipboard('35.206.126.125', this)" class="text-[10px] font-bold text-stone-400 hover:text-blue-600 transition-colors uppercase btn-animate">Copy</button>
+                        <button onclick="copyToClipboard('35.206.126.125', this)" class="text-[10px] font-bold text-stone-400 hover:text-blue-600 transition-colors uppercase btn-animate" aria-label="Copy public IP to clipboard">Copy</button>
                     </div>
                 </div>
                 <div class="bg-stone-50 p-4 rounded-lg border border-stone-200 hover:border-blue-200 transition-all">
                     <label class="block text-[10px] uppercase font-bold text-stone-400 mb-1">Secure Key</label>
                     <div class="flex items-center justify-between">
                         <code class="font-mono text-stone-800 text-sm truncate pr-2">MhGj1W5nVR3PI...</code>
-                        <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=', this)" class="text-[10px] font-bold text-stone-400 hover:text-blue-600 transition-colors uppercase shrink-0 btn-animate">Copy Key</button>
+                        <button onclick="copyToClipboard('MhGj1W5nVR3PI+h45DfGAhR16bMAQElHg7HCWymvD0w=', this)" class="text-[10px] font-bold text-stone-400 hover:text-blue-600 transition-colors uppercase shrink-0 btn-animate" aria-label="Copy secure key to clipboard">Copy Key</button>
                     </div>
                 </div>
             </div>
@@ -318,122 +506,6 @@
         <span class="text-orange-500">✔</span> COPIED TO CLIPBOARD 🚀
     </div>
 
-    <script>
-        // --- RustDesk Tab Switching ---
-        const switchTab = (tabName) => {
-            const tailscaleBtn = document.getElementById('tab-tailscale');
-            const publicBtn = document.getElementById('tab-public');
-            const tailscaleContent = document.getElementById('content-tailscale');
-            const publicContent = document.getElementById('content-public');
-
-            if (tabName === 'tailscale') {
-                tailscaleBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
-                tailscaleBtn.classList.remove('text-stone-500');
-                publicBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
-                publicBtn.classList.add('text-stone-500');
-                tailscaleContent.classList.remove('hidden');
-                publicContent.classList.add('hidden');
-            } else {
-                publicBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
-                publicBtn.classList.remove('text-stone-500');
-                tailscaleBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
-                tailscaleBtn.classList.add('text-stone-500');
-                publicContent.classList.remove('hidden');
-                tailscaleContent.classList.add('hidden');
-            }
-        };
-
-        // --- Clipboard Helper with Animation ---
-        const copyToClipboard = (text, btnElement) => {
-            const dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-            
-            // Pulse the button
-            if(btnElement) {
-                btnElement.classList.add('copy-success-pulse');
-                setTimeout(() => btnElement.classList.remove('copy-success-pulse'), 500);
-            }
-            
-            showToast();
-        };
-
-        const showToast = () => {
-            const toast = document.getElementById('toast');
-            toast.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-24', 'opacity-0');
-            }, 2500);
-        };
-
-        // --- Radar Chart ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctx = document.getElementById('nodeRadarChart').getContext('2d');
-            
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Compute', 'Graphics', 'Storage', 'Network', 'Uptime'],
-                    datasets: [
-                        {
-                            label: 'Win11 (Rig)',
-                            data: [90, 95, 80, 70, 60],
-                            backgroundColor: 'rgba(234, 88, 12, 0.2)',
-                            borderColor: 'rgb(234, 88, 12)',
-                            pointBackgroundColor: 'rgb(234, 88, 12)',
-                            borderWidth: 2
-                        },
-                        {
-                            label: 'VMLinux (VM)',
-                            data: [60, 20, 70, 80, 70],
-                            backgroundColor: 'rgba(87, 83, 78, 0.2)',
-                            borderColor: 'rgb(87, 83, 78)',
-                            pointBackgroundColor: 'rgb(87, 83, 78)',
-                            borderWidth: 2
-                        },
-                        {
-                            label: 'GCS (Cloud)',
-                            data: [40, 0, 50, 100, 95],
-                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                            borderColor: 'rgb(59, 130, 246)',
-                            pointBackgroundColor: 'rgb(59, 130, 246)',
-                            borderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: { color: '#E7E5E4' },
-                            grid: { color: '#E7E5E4' },
-                            pointLabels: {
-                                font: { size: 10, family: "'Space Grotesk', sans-serif", weight: 'bold' },
-                                color: '#78716C'
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 100,
-                            ticks: { display: false }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                font: { size: 11, family: "'Space Grotesk', sans-serif" },
-                                boxWidth: 10,
-                                padding: 20
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
