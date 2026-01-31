@@ -2,6 +2,8 @@
 
 Yo! Welcome to my digital playground. I'm running a triple-threat system setup connected via **Tailscale** and managed through **RustDesk**.
 
+Link: https://my-homelab.pages.dev/
+
 ### 🖥️ The Rig (Win11)
 
 * **CPU:** AMD Ryzen 5 5500 @ 3.6GHz 🚀
